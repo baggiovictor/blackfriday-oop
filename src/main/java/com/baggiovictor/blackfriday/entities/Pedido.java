@@ -1,5 +1,6 @@
 package com.baggiovictor.blackfriday.entities;
 
+import com.baggiovictor.blackfriday.entities.enums.SituacaoPedido;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,6 +21,8 @@ public class Pedido implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant momentoPedido;
 
+    private SituacaoPedido situacaoPedido;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_cliente")
@@ -27,9 +30,10 @@ public class Pedido implements Serializable {
 
     public Pedido() {}
 
-    public Pedido(Long id, Instant momentoPedido, Usuario cliente) {
+    public Pedido(Long id, Instant momentoPedido, SituacaoPedido situacaoPedido, Usuario cliente) {
         this.id = id;
         this.momentoPedido = momentoPedido;
+        this.situacaoPedido = situacaoPedido;
         this.cliente = cliente;
     }
 
@@ -47,6 +51,14 @@ public class Pedido implements Serializable {
 
     public void setMomentoPedido(Instant momentoPedido) {
         this.momentoPedido = momentoPedido;
+    }
+
+    public SituacaoPedido getSituacaoPedido() {
+        return situacaoPedido;
+    }
+
+    public void setSituacaoPedido(SituacaoPedido situacaoPedido) {
+        this.situacaoPedido = situacaoPedido;
     }
 
     public Usuario getCliente() {
