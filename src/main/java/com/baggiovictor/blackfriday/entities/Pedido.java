@@ -21,7 +21,7 @@ public class Pedido implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant momentoPedido;
 
-    private SituacaoPedido situacaoPedido;
+    private Integer situacaoPedido;
 
     @JsonIgnore
     @ManyToOne
@@ -33,7 +33,7 @@ public class Pedido implements Serializable {
     public Pedido(Long id, Instant momentoPedido, SituacaoPedido situacaoPedido, Usuario cliente) {
         this.id = id;
         this.momentoPedido = momentoPedido;
-        this.situacaoPedido = situacaoPedido;
+        setSituacaoPedido(situacaoPedido);
         this.cliente = cliente;
     }
 
@@ -54,11 +54,14 @@ public class Pedido implements Serializable {
     }
 
     public SituacaoPedido getSituacaoPedido() {
-        return situacaoPedido;
+        return SituacaoPedido.valueOf(situacaoPedido);
     }
 
     public void setSituacaoPedido(SituacaoPedido situacaoPedido) {
-        this.situacaoPedido = situacaoPedido;
+        if (situacaoPedido != null) {
+            this.situacaoPedido = situacaoPedido.getCode();
+        }
+
     }
 
     public Usuario getCliente() {
