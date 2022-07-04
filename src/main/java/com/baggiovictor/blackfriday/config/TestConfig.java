@@ -2,10 +2,12 @@ package com.baggiovictor.blackfriday.config;
 
 import com.baggiovictor.blackfriday.entities.Categoria;
 import com.baggiovictor.blackfriday.entities.Pedido;
+import com.baggiovictor.blackfriday.entities.Produto;
 import com.baggiovictor.blackfriday.entities.Usuario;
 import com.baggiovictor.blackfriday.entities.enums.SituacaoPedido;
 import com.baggiovictor.blackfriday.repositories.CategoriaRepository;
 import com.baggiovictor.blackfriday.repositories.PedidoRepository;
+import com.baggiovictor.blackfriday.repositories.ProdutoRepository;
 import com.baggiovictor.blackfriday.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -27,6 +29,9 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -43,8 +48,22 @@ public class TestConfig implements CommandLineRunner {
         Pedido o2 = new Pedido(null, Instant.parse("2022-06-21T03:42:10Z"), SituacaoPedido.ENTREGUE, u2);
         Pedido o3 = new Pedido(null, Instant.parse("2022-06-22T15:21:22Z"),SituacaoPedido.ENVIADO, u1);
 
+        Produto produto1 = new Produto(null, "TV Samsung", "teste tv", 1299.95, null);
+        Produto produto2 = new Produto(null, "TV LG", "tv lg", 1699.95, null);
+        Produto produto3 = new Produto(null, "Camisa São Paulo", "Camisa adidas spfc", 299.95, null);
+
+
+        produtoRepository.saveAll(Arrays.asList(produto1, produto2, produto3));
+
+        produto1.getCategorias().add(cat1);
+        produto2.getCategorias().add(cat1);
+        produto3.getCategorias().add(cat3);
+
+        produtoRepository.saveAll(Arrays.asList(produto1, produto2, produto3));
 
         usuarioRepository.saveAll(Arrays.asList(u1, u2));
         pedidoRepository.saveAll(Arrays.asList(o1, o2, o3));
+
+
     }
 }

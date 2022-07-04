@@ -1,8 +1,12 @@
 package com.baggiovictor.blackfriday.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "categoria")
@@ -11,14 +15,17 @@ public class Categoria implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String nome;
+    @ManyToMany(mappedBy = "categorias")
+    @JsonIgnore
+    private Set<Produto> produtos = new HashSet<>();
 
     public Categoria() {
     }
 
-    public Categoria(Long id, String name) {
+    public Categoria(Long id, String nome) {
         this.id = id;
-        this.name = name;
+        this.nome = nome;
     }
 
     public Long getId() {
@@ -29,12 +36,16 @@ public class Categoria implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Set<Produto> getProdutos() {
+        return produtos;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String name) {
+        this.nome = name;
     }
 
     @Override
