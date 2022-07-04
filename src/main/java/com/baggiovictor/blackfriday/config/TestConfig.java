@@ -41,7 +41,7 @@ public class TestConfig implements CommandLineRunner {
         Usuario usuario1 = new Usuario(null, "Victor Baggio", "victorbaggio@gmail.com", "999086753", "132456");
         Usuario usuario2 = new Usuario(null, "Marcos Baggio", "marcosbaggio@gmail.com", "999795955", "444456");
 
-        Pedido pedido1 = new Pedido(null, Instant.parse("2022-06-20T19:53:07Z"), SituacaoPedido.AGUARDANDO_PAGAMENTO,usuario1);
+        Pedido pedido1 = new Pedido(null, Instant.parse("2022-06-20T19:53:07Z"), SituacaoPedido.PAGO,usuario1);
         Pedido pedido2 = new Pedido(null, Instant.parse("2022-06-21T03:42:10Z"), SituacaoPedido.ENTREGUE, usuario2);
         Pedido pedido3 = new Pedido(null, Instant.parse("2022-06-22T15:21:22Z"),SituacaoPedido.ENVIADO, usuario1);
 
@@ -64,6 +64,11 @@ public class TestConfig implements CommandLineRunner {
         ItemPedido itemPedido2 = new ItemPedido(pedido2, produto2, 5, produto2.getPreco());
 
         itemPedidoRepository.saveAll(Arrays.asList(itemPedido1, itemPedido2));
+
+        Pagamento pagamento1 = new Pagamento(null, Instant.parse("2022-06-20T21:53:07Z"), pedido1);
+        pedido1.setPagamento(pagamento1);
+
+        pedidoRepository.saveAll(Arrays.asList(pedido1));
 
 
     }
