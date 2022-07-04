@@ -1,5 +1,7 @@
 package com.baggiovictor.blackfriday.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -21,6 +23,9 @@ public class Produto implements Serializable {
     @JoinTable(name = "produto_categoria", joinColumns = @JoinColumn(name = "id_produto"),
     inverseJoinColumns = @JoinColumn(name = "id_categoria"))
     private Set<Categoria> categorias = new HashSet<>();
+
+    @OneToMany(mappedBy = "id.produto")
+    private Set<ItemPedido> itemPedidos = new HashSet<>();
 
     public Produto() {
     }
@@ -66,6 +71,14 @@ public class Produto implements Serializable {
 
     public Set<Categoria> getCategorias() {
         return categorias;
+    }
+    @JsonIgnore
+    public Set<Pedido> getPedido() {
+        Set<Pedido> setPedido = new HashSet<>();
+        for (ItemPedido itemPedido: itemPedidos) {
+            setPedido.add(itemPedido.getPedido());
+        }
+        return setPedido;
     }
 
     @Override
