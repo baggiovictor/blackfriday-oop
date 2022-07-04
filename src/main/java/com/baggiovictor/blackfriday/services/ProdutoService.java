@@ -24,4 +24,24 @@ public class ProdutoService {
         return produto.get();
     }
 
+    public Produto create(Produto produto) {
+        return repository.save(produto);
+    }
+
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
+    public Produto update(Long id, Produto produto) {
+        Produto entity = repository.getOne(id);
+        atualizarDados(entity, produto);
+        return repository.save(entity);
+    }
+
+    private void atualizarDados(Produto entity, Produto produto) {
+        entity.setNome(produto.getNome());
+        entity.setDescricao(produto.getDescricao());
+        entity.setPreco(produto.getPreco());
+    }
+
 }
