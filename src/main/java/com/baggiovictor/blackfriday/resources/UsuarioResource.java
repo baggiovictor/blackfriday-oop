@@ -37,4 +37,10 @@ public class UsuarioResource {
         return ResponseEntity.created(uri).body(usuario);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
