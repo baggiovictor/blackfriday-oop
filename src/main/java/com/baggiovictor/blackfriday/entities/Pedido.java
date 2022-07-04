@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "pedido")
@@ -27,6 +29,9 @@ public class Pedido implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Usuario cliente;
+
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<ItemPedido> itensPedido = new HashSet<>();
 
     public Pedido() {}
 
@@ -70,6 +75,10 @@ public class Pedido implements Serializable {
 
     public void setCliente(Usuario cliente) {
         this.cliente = cliente;
+    }
+
+    public Set<ItemPedido> getItensPedido() {
+        return itensPedido;
     }
 
     @Override
