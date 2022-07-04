@@ -5,12 +5,12 @@ import com.baggiovictor.blackfriday.entities.Usuario;
 import com.baggiovictor.blackfriday.services.CategoriaService;
 import com.baggiovictor.blackfriday.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.Repository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -30,5 +30,25 @@ public class CategoriaResource {
         Categoria categoria = service.buscarPorId(id);
         return ResponseEntity.ok().body(categoria);
     }
+
+    @PostMapping(value = "/criarCategoria")
+    public ResponseEntity<Categoria> create(@RequestBody Categoria categoria) {
+        categoria = service.create(categoria);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.getId()).toUri();
+        return ResponseEntity.created(uri).body(categoria);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Categoria> atualizar(@PathVariable Long id, @RequestBody Categoria categoria) {
+        categoria = service.update(id, categoria);
+        return ResponseEntity.ok().body(categoria);
+    }
+
 
 }
