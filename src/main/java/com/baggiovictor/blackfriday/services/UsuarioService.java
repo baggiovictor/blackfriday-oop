@@ -2,6 +2,7 @@ package com.baggiovictor.blackfriday.services;
 
 import com.baggiovictor.blackfriday.entities.Usuario;
 import com.baggiovictor.blackfriday.repositories.UsuarioRepository;
+import com.baggiovictor.blackfriday.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class UsuarioService {
 
     public Usuario buscarPorId(Long id) {
         Optional<Usuario> usuario = repository.findById(id);
-        return usuario.get();
+        return usuario.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public Usuario create(Usuario usuario) {
@@ -28,6 +29,18 @@ public class UsuarioService {
 
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    public Usuario update(Long id, Usuario usuario) {
+        Usuario entity = repository.getOne(id);
+        atualizarDados(entity, usuario);
+        return repository.save(entity);
+    }
+
+    private void atualizarDados(Usuario entity, Usuario usuario) {
+        entity.setNome(usuario.getNome());
+        entity.setEmail(usuario.getEmail());
+        entity.setTelefone(usuario.getTelefone());
     }
 
 }
