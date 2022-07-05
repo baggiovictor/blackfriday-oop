@@ -24,4 +24,10 @@ public class PedidoService {
         return pedido.get();
     }
 
+    public Pedido create(Pedido pedido) { return repository.save(pedido);}
+
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
 }
